@@ -78,5 +78,37 @@ export const savePlanIndex = (req,res)=>{
 }
 
 export const deletePlanIndex = (req,res)=>{
+    var data = fs.readFileSync("planDetails.json")
+    var myObj = JSON.parse(data)
+    var ids = req.body.id
+
+    ids.forEach((element) => {
+            let itemIndex = (myObj.findIndex(item => item.id === element)); 
+             myObj.splice(itemIndex, 1);
+        })
+
+        var strData =  JSON.stringify(myObj)
+    
+
+        fs.writeFile("planDetails.json",strData,
+            err =>{
+                if(err) {
+                    const resData ={
+                        "status":"400",
+                        "msg":"Bad Request"
+                    }
+                    res.send(resData)
+                    res.end()
+                }
+                else{
+                    const resData ={
+                        "status":"200",
+                        "msg":"Deleted Selected Plan(s) Successfully!"
+                    }
+                    res.send(resData)
+                    res.end()
+                }     
+               })
+ 
 
 }
