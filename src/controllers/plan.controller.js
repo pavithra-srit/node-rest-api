@@ -11,7 +11,7 @@ export const createPlanIndex2 = async (req,res)=>{
     let newPlan = {
         id:req.body.id,
         place:req.body.place,
-        vaccationType:req.body.vaccationType,
+        vacationType:req.body.vacationType,
         besttime:req.body.besttime,
         modeofTransport:req.body.modeofTransport,
         duration:req.body.duration,
@@ -34,7 +34,7 @@ export const createPlanIndex = (req,res)=>{
     let newPlan = {
         id:req.body.id,
         place:req.body.place,
-        vaccationType:req.body.vaccationType,
+        vacationType:req.body.vacationType,
         besttime:req.body.besttime,
         modeofTransport:req.body.modeofTransport,
         duration:req.body.duration,
@@ -74,6 +74,47 @@ export const createPlanIndex = (req,res)=>{
 }
 
 export const savePlanIndex = (req,res)=>{
+    var data = fs.readFileSync("planDetails.json")
+    var myObj = JSON.parse(data)
+    var id = req.body.id
+    const foundUser = myObj.find((user) => user.id === id)
+console.log("foundddd", foundUser)
+
+    let updatePlan = {
+        id:req.body.id,
+        place:req.body.place,
+        vacationType:req.body.vacationType,
+        besttime:req.body.besttime,
+        modeofTransport:req.body.modeofTransport,
+        duration:req.body.duration,
+        startdate:req.body.startdate,
+        enddate:req.body.enddate,
+        attraction:req.body.attraction,
+        note:req.body.note
+    }
+    myObj.push(updatePlan)
+    var strData =  JSON.stringify(myObj)
+    
+
+    fs.writeFile("planDetails.json",strData,
+        err =>{
+            if(err) {
+                const resData ={
+                    "status":"400",
+                    "msg":"Bad Request"
+                }
+                res.send(resData)
+                res.end()
+            }
+            else{
+                const resData ={
+                    "status":"200",
+                    "msg":"Updated Plan Successfully!"
+                }
+                res.send(resData)
+                res.end()
+            }     
+           })
 
 }
 
