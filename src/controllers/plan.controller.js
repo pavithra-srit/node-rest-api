@@ -77,8 +77,9 @@ export const savePlanIndex = (req,res)=>{
     var data = fs.readFileSync("planDetails.json")
     var myObj = JSON.parse(data)
     var id = req.body.id
-    const foundUser = myObj.find((user) => user.id === id)
-console.log("foundddd", foundUser)
+
+        let itemIndex = (myObj.findIndex(item => item.id === id)); 
+        myObj.splice(itemIndex, 1);
 
     let updatePlan = {
         id:req.body.id,
